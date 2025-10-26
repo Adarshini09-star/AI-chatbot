@@ -2,25 +2,15 @@
 // CONFIGURATION
 // ============================================================================
 
-const DEMO_MODE = false; // Set to true for demo without backend
-// Automatically detect the backend host
+// Toggle demo mode (for offline testing without backend)
+const DEMO_MODE = false;
 
+// Automatically detect backend host and port
 const API_HOST = window.location.hostname;
-
-// Default backend port (Flask)
 const API_PORT = 5000;
+const API_URL = `http://${API_HOST}:${API_PORT}/api`;
 
-// Build full API URL dynamically
-const API_URL = http://${API_HOST}:${API_PORT}/api;
-
-fetch(`${API_URL}/chat`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: userMessage })
-});
-
-
-
+console.log("🔗 Connecting to backend at:", API_URL);
 
 // ============================================================================
 // STATE MANAGEMENT
@@ -45,26 +35,26 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeApp() {
     // Initialize textarea auto-resize
     const textarea = document.getElementById('messageInput');
-    textarea.addEventListener('input', autoResizeTextarea);
-    
-    // Initialize character counter
-    textarea.addEventListener('input', updateCharCounter);
-    
-    // Initialize Enter key handler
-    textarea.addEventListener('keydown', handleEnterKey);
-    
-    // Initialize voice recognition if available
-    initVoiceRecognition();
+    if (textarea) {
+        textarea.addEventListener('input', autoResizeTextarea);
+        textarea.addEventListener('input', updateCharCounter);
+        textarea.addEventListener('keydown', handleEnterKey);
+    }
     
     console.log('🏥 HealthCare AI Assistant initialized');
 }
 
 function setupEventListeners() {
-    // Login form
-    document.getElementById('loginFormElement').addEventListener('submit', handleLogin);
+    // Only set up if elements exist
+    const loginForm = document.getElementById('loginFormElement');
+    const registerForm = document.getElementById('registerFormElement');
     
-    // Register form
-    document.getElementById('registerFormElement').addEventListener('submit', handleRegister);
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
+    if (registerForm) {
+        registerForm.addEventListener('submit', handleRegister);
+    }
 }
 
 function checkExistingSession() {
@@ -74,9 +64,14 @@ function checkExistingSession() {
     if (token && user) {
         currentUser = JSON.parse(user);
         sessionId = generateSessionId();
-        showMainApp();
-        loadHealthNews();
-        showToast('Welcome back, ' + currentUser.name + '! 👋', 'success');
+        if (typeof showMainApp === 'function') showMainApp();
+        if (typeof loadHealthNews === 'function') loadHealthNews();
+        if (typeof showToast === 'function') {
+            showToast('Welcome back, ' + currentUser.name + '! 👋', 'success');
+        }
+    } else {
+        // Generate session ID even if not logged in
+        sessionId = generateSessionId();
     }
 }
 
@@ -105,7 +100,7 @@ async function handleLogin(e) {
             }, 1000);
         } else {
             // Real API call
-            const response = await fetch(`${API_BASE_URL}/auth/login`, {
+            const response = await fetch(`${API_URL}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
@@ -153,7 +148,7 @@ async function handleRegister(e) {
                 showToast('Account created successfully! 🎉', 'success');
             }, 1000);
         } else {
-            const response = await fetch(`${API_BASE_URL}/auth/register`, {
+            const response = await fetch(`${API_URL}/auth/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, email, password })
@@ -194,7 +189,7 @@ function simulateLogin(email, name = null) {
     
     hideLoadingOverlay();
     showMainApp();
-    loadHealthNews();
+    if (typeof loadHealthNews === 'function') loadHealthNews();
     showToast('Welcome, ' + user.name + '! 🏥', 'success');
 }
 
@@ -207,87 +202,120 @@ function handleLoginSuccess(data) {
     
     hideLoadingOverlay();
     showMainApp();
-    loadHealthNews();
+    if (typeof loadHealthNews === 'function') loadHealthNews();
     showToast('Welcome back, ' + data.user.name + '! 👋', 'success');
 }
 
 function logout() {
     sessionStorage.clear();
     currentUser = null;
-    sessionId = null;
+    sessionId = generateSessionId();
     chatHistory = [];
     
-    document.getElementById('mainApp').style.display = 'none';
-    document.getElementById('authModal').classList.add('active');
+    const mainApp = document.getElementById('mainApp');
+    const authModal = document.getElementById('authModal');
+    const messagesArea = document.getElementById('messagesArea');
+    
+    if (mainApp) mainApp.style.display = 'none';
+    if (authModal) authModal.classList.add('active');
     
     // Clear messages
-    document.getElementById('messagesArea').innerHTML = getWelcomeMessage();
+    if (messagesArea && typeof getWelcomeMessage === 'function') {
+        messagesArea.innerHTML = getWelcomeMessage();
+    }
     
     showToast('Logged out successfully. See you soon! 👋', 'success');
 }
 
 function showLogin() {
-    document.getElementById('registerForm').style.display = 'none';
-    document.getElementById('loginForm').style.display = 'block';
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    
+    if (registerForm) registerForm.style.display = 'none';
+    if (loginForm) loginForm.style.display = 'block';
 }
 
 function showRegister() {
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('registerForm').style.display = 'block';
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    
+    if (loginForm) loginForm.style.display = 'none';
+    if (registerForm) registerForm.style.display = 'block';
 }
 
 function showMainApp() {
-    document.getElementById('authModal').classList.remove('active');
-    document.getElementById('mainApp').style.display = 'flex';
-    document.getElementById('userName').textContent = currentUser.name;
+    const authModal = document.getElementById('authModal');
+    const mainApp = document.getElementById('mainApp');
+    const userName = document.getElementById('userName');
+    
+    if (authModal) authModal.classList.remove('active');
+    if (mainApp) mainApp.style.display = 'flex';
+    if (userName && currentUser) userName.textContent = currentUser.name;
 }
 
 // ============================================================================
 // CHAT FUNCTIONALITY
 // ============================================================================
 
-async function sendMessage(message) {
-  const chatWindow = document.getElementById("chat-window");
+async function sendMessage(messageText) {
+    // Get message from input if not provided
+    const message = messageText || document.getElementById("messageInput")?.value?.trim();
+    
+    if (!message) return;
+    
+    const chatWindow = document.getElementById("messagesArea") || document.getElementById("chat-window");
+    const messageInput = document.getElementById("messageInput");
+    
+    if (!chatWindow) {
+        console.error("Chat window not found");
+        return;
+    }
+    
+    // Clear input
+    if (messageInput && !messageText) {
+        messageInput.value = '';
+    }
 
-  // Show user message
-  const userMsg = document.createElement("div");
-  userMsg.classList.add("message", "user");
-  userMsg.textContent = message;
-  chatWindow.appendChild(userMsg);
-  chatWindow.scrollTop = chatWindow.scrollHeight;
+    // Show user message
+    addMessageToChat(message, 'user');
 
-  try {
-    const response = await fetch("http://127.0.0.1:5000/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        message: message,
-        session_id: "user123",
-      }),
-    });
+    // Show typing indicator
+    showTypingIndicator();
 
-    const data = await response.json();
+    try {
+        // Use dynamic API_URL instead of hardcoded
+        const response = await fetch(`${API_URL}/chat`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                message: message,
+                session_id: sessionId || "user123",
+            }),
+        });
 
-    // Show bot message
-    const botMsg = document.createElement("div");
-    botMsg.classList.add("message", "bot");
-    botMsg.textContent = data.reply || "⚠️ No reply received.";
-    chatWindow.appendChild(botMsg);
-    chatWindow.scrollTop = chatWindow.scrollHeight;
+        const data = await response.json();
 
-  } catch (error) {
-    const errMsg = document.createElement("div");
-    errMsg.classList.add("message", "bot");
-    errMsg.textContent = "❌ Error: Could not connect to backend.";
-    chatWindow.appendChild(errMsg);
-  }
+        // Hide typing indicator
+        hideTypingIndicator();
+
+        // Show bot message
+        addMessageToChat(data.response || data.reply || "⚠️ No reply received.", 'bot');
+
+    } catch (error) {
+        hideTypingIndicator();
+        
+        addMessageToChat(`❌ Error: Could not connect to backend at ${API_URL}`, 'bot');
+        
+        console.error("Chat error:", error);
+    }
 }
 
-
 function addMessageToChat(text, sender) {
-    const messagesArea = document.getElementById('messagesArea');
+    const messagesArea = document.getElementById('messagesArea') || document.getElementById('chat-window');
+    
+    if (!messagesArea) return;
     
     // Remove welcome message if it exists
     const welcomeMsg = messagesArea.querySelector('.welcome-message');
@@ -303,11 +331,16 @@ function addMessageToChat(text, sender) {
         minute: '2-digit' 
     });
     
+    // Format the text
+    let formattedText = escapeHtml(text);
+    formattedText = formattedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    formattedText = formattedText.replace(/\n/g, '<br>');
+    
     messageDiv.innerHTML = `
         <div class="message-avatar">${sender === 'user' ? '👤' : '🤖'}</div>
         <div>
-            <div class="message-content">${escapeHtml(text)}</div>
-            <div class="message-timestamp">${timestamp}</div>
+            <div class="message-content">${formattedText}</div>
+            ${timestamp ? `<div class="message-timestamp">${timestamp}</div>` : ''}
         </div>
     `;
     
@@ -316,14 +349,19 @@ function addMessageToChat(text, sender) {
 }
 
 function showTypingIndicator() {
-    const messagesArea = document.getElementById('messagesArea');
+    const messagesArea = document.getElementById('messagesArea') || document.getElementById('chat-window');
+    
+    if (!messagesArea) return;
+    
+    // Remove existing typing indicator
+    hideTypingIndicator();
     
     const typingDiv = document.createElement('div');
-    typingDiv.className = 'typing-indicator';
+    typingDiv.className = 'message bot';
     typingDiv.id = 'typingIndicator';
     typingDiv.innerHTML = `
         <div class="message-avatar">🤖</div>
-        <div class="message-content">
+        <div class="typing-indicator active">
             <div class="typing-dot"></div>
             <div class="typing-dot"></div>
             <div class="typing-dot"></div>
@@ -342,8 +380,21 @@ function hideTypingIndicator() {
 }
 
 function sendQuickQuestion(question) {
-    document.getElementById('messageInput').value = question;
-    sendMessage();
+    sendMessage(question);
+}
+
+function scrollToBottom() {
+    const messagesArea = document.getElementById('messagesArea') || document.getElementById('chat-window');
+    if (messagesArea) {
+        messagesArea.scrollTop = messagesArea.scrollHeight;
+    }
+}
+
+// Helper function to escape HTML
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 // ============================================================================
@@ -382,7 +433,8 @@ function generateDemoResponse(message) {
     
     // Check for greetings
     if (lowerMessage.match(/\b(hi|hello|hey|greetings)\b/)) {
-        return `Hello ${currentUser.name}! 👋 How can I help you today? I can assist with:\n\n• Health symptoms and conditions\n• Diet and nutrition advice\n• Exercise recommendations\n• Stress and mental health\n• Finding nearby hospitals\n• Emergency helplines\n\nWhat would you like to know?`;
+        const name = currentUser ? currentUser.name : 'there';
+        return `Hello ${name}! 👋 How can I help you today? I can assist with:\n\n• Health symptoms and conditions\n• Diet and nutrition advice\n• Exercise recommendations\n• Stress and mental health\n• Finding nearby hospitals\n• Emergency helplines\n\nWhat would you like to know?`;
     }
     
     // Check for thanks
@@ -429,7 +481,7 @@ async function handleFileUpload(input, type) {
             formData.append('sessionId', sessionId);
             formData.append('type', type);
             
-            const response = await fetch(`${API_BASE_URL}/upload`, {
+            const response = await fetch(`${API_URL}/upload`, {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + sessionStorage.getItem('authToken')
@@ -444,3 +496,139 @@ async function handleFileUpload(input, type) {
             if (response.ok) {
                 addMessageToChat(data.analysis || 'File uploaded successfully!', 'bot');
                 showToast('File uploaded successfully! 📎', 'success');
+            } else {
+                addMessageToChat('Failed to upload file. Please try again.', 'bot');
+                showToast('Upload failed', 'error');
+            }
+        }
+    } catch (error) {
+        hideTypingIndicator();
+        addMessageToChat('Error uploading file. Please try again.', 'bot');
+        console.error('Upload error:', error);
+    }
+    
+    input.value = '';
+}
+
+// ============================================================================
+// UTILITY FUNCTIONS
+// ============================================================================
+
+function generateSessionId() {
+    return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+}
+
+function showError(elementId, message) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.textContent = message;
+        element.classList.add('active');
+        setTimeout(() => {
+            element.classList.remove('active');
+        }, 5000);
+    }
+}
+
+function showToast(message, type = 'info') {
+    const toast = document.getElementById('toast');
+    if (toast) {
+        toast.textContent = message;
+        toast.className = 'toast show ' + type;
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    } else {
+        console.log('Toast:', message);
+    }
+}
+
+function showLoadingOverlay() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) overlay.style.display = 'flex';
+}
+
+function hideLoadingOverlay() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) overlay.style.display = 'none';
+}
+
+function autoResizeTextarea(e) {
+    const textarea = e.target;
+    textarea.style.height = 'auto';
+    textarea.style.height = Math.min(textarea.scrollHeight, 150) + 'px';
+}
+
+function updateCharCounter(e) {
+    const textarea = e.target;
+    const counter = document.getElementById('charCount');
+    if (counter) {
+        const count = textarea.value.length;
+        counter.textContent = `${count}/500`;
+        if (count > 500) {
+            counter.style.color = 'red';
+        } else {
+            counter.style.color = '';
+        }
+    }
+}
+
+function handleEnterKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+    }
+}
+
+function initVoiceRecognition() {
+    // Voice recognition initialization
+    // To be implemented if needed
+    console.log('Voice recognition: Not implemented yet');
+}
+
+function loadHealthNews() {
+    // Load health news
+    // To be implemented if needed
+    console.log('Health news: Not implemented yet');
+}
+
+function getWelcomeMessage() {
+    return `
+        <div class="message bot">
+            <div class="message-avatar">🤖</div>
+            <div class="message-content">
+                Hello! 👋 I'm your AI Public Health Assistant.<br><br>
+                I can help you with:<br>
+                ✅ Disease information<br>
+                ✅ Symptoms and prevention tips<br>
+                ✅ Health guidance<br><br>
+                What would you like to know about today?
+            </div>
+        </div>
+    `;
+}
+
+// Sidebar functions
+function findNearbyHospitals() {
+    sendQuickQuestion('Show me nearby hospitals');
+}
+
+function findNearbyDoctors() {
+    sendQuickQuestion('Show me nearby doctors');
+}
+
+function showHelplines() {
+    addMessageToChat('Emergency helplines', 'user');
+    setTimeout(() => {
+        addMessageToChat('🚨 Emergency Helplines:\n\n• India Emergency: 112\n• Ambulance: 108\n• Police: 100\n• Fire: 101\n• Women Helpline: 1091\n• Child Helpline: 1098\n• Mental Health: 1800-599-0019', 'bot');
+    }, 500);
+}
+
+function showAyurvedicTips() {
+    sendQuickQuestion('Give me ayurvedic health tips');
+}
+
+function showDietPlans() {
+    sendQuickQuestion('Suggest a healthy diet plan');
+}
+
+console.log('✅ Script loaded successfully');
