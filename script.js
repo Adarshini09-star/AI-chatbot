@@ -11,7 +11,14 @@ const API_HOST = window.location.hostname;
 const API_PORT = 5000;
 
 // Build full API URL dynamically
-const API_URL = `http://${API_HOST}:${API_PORT}/api`;
+const API_URL = http://${API_HOST}:${API_PORT}/api;
+
+fetch(`${API_URL}/chat`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: userMessage })
+});
+
 
 
 
