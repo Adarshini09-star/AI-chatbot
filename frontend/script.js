@@ -2,18 +2,8 @@
 // CONFIGURATION
 // ============================================================================
 
+const API_BASE_URL = 'http://localhost:5000/api'; // Change this to your backend URL
 const DEMO_MODE = false; // Set to true for demo without backend
-// Automatically detect the backend host
-
-const API_HOST = window.location.hostname;
-
-// Default backend port (Flask)
-const API_PORT = 5000;
-
-// Build full API URL dynamically
-const API_URL = `http://${API_HOST}:${API_PORT}/api`;
-
-
 
 // ============================================================================
 // STATE MANAGEMENT
