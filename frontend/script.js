@@ -6,12 +6,11 @@
 const DEMO_MODE = false;
 
 // Automatically detect backend host and port
-const API_HOST = window.location.hostname;
+const API_HOST = window.location.hostname || '127.0.0.1';
 const API_PORT = 5000;
 const API_URL = `http://${API_HOST}:${API_PORT}/api`;
 
 console.log("🔗 Connecting to backend at:", API_URL);
-
 // ============================================================================
 // STATE MANAGEMENT
 // ============================================================================
