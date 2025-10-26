@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HealthCare AI Assistant</title>
+    <title>AI-Driven Public Health Chatbot</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏥</text></svg>">
     <style>
         * {
@@ -15,8 +15,6 @@
         :root {
             --primary: #667eea;
             --primary-dark: #764ba2;
-            --secondary: #f093fb;
-            --secondary-dark: #f5576c;
             --success: #10b981;
             --error: #ef4444;
             --text: #1f2937;
@@ -31,160 +29,32 @@
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             min-height: 100vh;
             color: var(--text);
-        }
-
-        /* Auth Modal */
-        .auth-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
+            display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
 
-        .auth-modal.active {
-            display: flex;
-        }
-
-        .auth-container {
+        .app-container {
+            width: 100%;
+            max-width: 1200px;
+            height: 90vh;
             background: white;
             border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 450px;
-            width: 100%;
-            overflow: hidden;
-            animation: slideUp 0.4s ease;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .auth-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 40px 30px;
-            text-align: center;
-        }
-
-        .auth-header h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-
-        .auth-form {
-            padding: 40px 30px;
-        }
-
-        .auth-form h2 {
-            color: var(--text);
-            margin-bottom: 25px;
-            text-align: center;
-            font-size: 24px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-light);
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            font-size: 15px;
-            transition: all 0.3s;
-            font-family: inherit;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .auth-btn {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .auth-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .auth-switch {
-            text-align: center;
-            margin-top: 20px;
-            color: var(--text-light);
-            font-size: 14px;
-        }
-
-        .auth-switch a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .auth-switch a:hover {
-            text-decoration: underline;
-        }
-
-        .error-message {
-            background: var(--error);
-            color: white;
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-            font-size: 14px;
-        }
-
-        .error-message.active {
-            display: block;
-        }
-
-        /* Main App */
-        .app-container {
-            display: none;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
             flex-direction: column;
-            height: 100vh;
-            background: white;
+            overflow: hidden;
         }
 
+        /* Header */
         .header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
-            padding: 20px 30px;
+            padding: 25px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .header-left {
@@ -199,6 +69,7 @@
 
         .header-title h1 {
             font-size: 24px;
+            margin-bottom: 4px;
         }
 
         .header-title p {
@@ -206,20 +77,14 @@
             opacity: 0.9;
         }
 
-        .logout-btn {
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid white;
-            color: white;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 15px;
-        }
-
-        .logout-btn:hover {
-            background: white;
-            color: var(--primary);
+        /* Disclaimer */
+        .disclaimer {
+            background: #fff3cd;
+            color: #856404;
+            padding: 12px 20px;
+            font-size: 13px;
+            border-bottom: 1px solid #ffeaa7;
+            text-align: center;
         }
 
         /* Main Content */
@@ -229,8 +94,9 @@
             overflow: hidden;
         }
 
+        /* Sidebar */
         .sidebar {
-            width: 300px;
+            width: 280px;
             background: var(--bg-light);
             padding: 20px;
             overflow-y: auto;
@@ -260,8 +126,10 @@
         .quick-link:hover {
             border-color: var(--primary);
             background: #f0f3ff;
+            transform: translateX(5px);
         }
 
+        /* Chat Container */
         .chat-container {
             flex: 1;
             display: flex;
@@ -275,6 +143,7 @@
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
+            overflow-x: auto;
         }
 
         .quick-btn {
@@ -286,6 +155,7 @@
             cursor: pointer;
             font-size: 13px;
             transition: all 0.3s;
+            white-space: nowrap;
         }
 
         .quick-btn:hover {
@@ -293,6 +163,7 @@
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
+        /* Messages Area */
         .messages-area {
             flex: 1;
             overflow-y: auto;
@@ -305,11 +176,23 @@
             gap: 12px;
             margin-bottom: 20px;
             max-width: 80%;
+            animation: slideIn 0.3s ease;
         }
 
         .message.user {
             flex-direction: row-reverse;
             margin-left: auto;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .message-avatar {
@@ -328,7 +211,7 @@
         }
 
         .message.user .message-avatar {
-            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         }
 
         .message-content {
@@ -336,12 +219,14 @@
             border-radius: 18px;
             line-height: 1.6;
             font-size: 15px;
+            white-space: pre-wrap;
         }
 
         .message.bot .message-content {
             background: white;
             border: 1px solid var(--border);
             border-bottom-left-radius: 6px;
+            color: var(--text);
         }
 
         .message.user .message-content {
@@ -350,6 +235,47 @@
             border-bottom-right-radius: 6px;
         }
 
+        /* Typing Indicator */
+        .typing-indicator {
+            display: none;
+            padding: 16px 20px;
+            background: white;
+            border-radius: 18px;
+            width: 70px;
+            border: 1px solid var(--border);
+        }
+
+        .typing-indicator.active {
+            display: flex;
+            gap: 5px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: bounce 1.4s ease-in-out infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes bounce {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Input Area */
         .input-area {
             padding: 20px;
             background: white;
@@ -362,24 +288,6 @@
             align-items: flex-end;
         }
 
-        .upload-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: 2px solid var(--primary);
-            background: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            transition: all 0.3s;
-        }
-
-        .upload-btn:hover {
-            background: var(--primary);
-        }
-
         #messageInput {
             flex: 1;
             padding: 14px 20px;
@@ -389,6 +297,7 @@
             font-family: inherit;
             resize: none;
             max-height: 150px;
+            transition: border-color 0.3s;
         }
 
         #messageInput:focus {
@@ -415,10 +324,12 @@
             transform: scale(1.1);
         }
 
-        input[type="file"] {
-            display: none;
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
+        /* Toast */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -427,7 +338,7 @@
             background: #1f2937;
             color: white;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             transform: translateY(100px);
             opacity: 0;
             transition: all 0.3s;
@@ -439,127 +350,116 @@
             opacity: 1;
         }
 
+        /* Mobile Responsive */
         @media (max-width: 768px) {
-            .sidebar { display: none; }
-            .message { max-width: 95%; }
+            body {
+                padding: 0;
+            }
+
+            .app-container {
+                height: 100vh;
+                border-radius: 0;
+                max-width: 100%;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+
+            .header-title h1 {
+                font-size: 18px;
+            }
+
+            .header-title p {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Auth Modal -->
-    <div class="auth-modal active" id="authModal">
-        <div class="auth-container">
-            <div class="auth-header">
-                <h1>🏥 HealthCare AI</h1>
-                <p>Your Trusted Health Companion</p>
-            </div>
-
-            <!-- Login Form -->
-            <div class="auth-form" id="loginForm">
-                <h2>Welcome Back!</h2>
-                <div class="error-message" id="loginError"></div>
-                <form onsubmit="handleLogin(event)">
-                    <div class="form-group">
-                        <label>📧 Email</label>
-                        <input type="email" id="loginEmail" required placeholder="Enter your email">
-                    </div>
-                    <div class="form-group">
-                        <label>🔒 Password</label>
-                        <input type="password" id="loginPassword" required placeholder="Enter your password">
-                    </div>
-                    <button type="submit" class="auth-btn">Login Securely 🔐</button>
-                </form>
-                <p class="auth-switch">
-                    Don't have an account? <a onclick="showRegister()">Register here</a>
-                </p>
-            </div>
-
-            <!-- Register Form -->
-            <div class="auth-form" id="registerForm" style="display: none;">
-                <h2>Create Account</h2>
-                <div class="error-message" id="registerError"></div>
-                <form onsubmit="handleRegister(event)">
-                    <div class="form-group">
-                        <label>👤 Full Name</label>
-                        <input type="text" id="registerName" required placeholder="Enter your name">
-                    </div>
-                    <div class="form-group">
-                        <label>📧 Email</label>
-                        <input type="email" id="registerEmail" required placeholder="Enter your email">
-                    </div>
-                    <div class="form-group">
-                        <label>🔒 Password</label>
-                        <input type="password" id="registerPassword" required placeholder="Create a password">
-                    </div>
-                    <button type="submit" class="auth-btn">Create Account 🎉</button>
-                </form>
-                <p class="auth-switch">
-                    Already have an account? <a onclick="showLogin()">Login here</a>
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main App -->
-    <div class="app-container" id="mainApp">
+    <div class="app-container">
+        <!-- Header -->
         <header class="header">
             <div class="header-left">
                 <div class="logo">🏥</div>
                 <div class="header-title">
-                    <h1>HealthCare AI Assistant</h1>
-                    <p>Your 24/7 Health Companion</p>
+                    <h1>AI Public Health Chatbot</h1>
+                    <p>BMS Institute of Technology & Management</p>
                 </div>
             </div>
-            <button class="logout-btn" onclick="logout()">Logout 🚪</button>
         </header>
 
+        <!-- Disclaimer -->
+        <div class="disclaimer">
+            ⚠️ <strong>Disclaimer:</strong> This chatbot provides general health information only. Always consult healthcare professionals for medical diagnosis and treatment.
+        </div>
+
+        <!-- Main Content -->
         <div class="main-content">
+            <!-- Sidebar -->
             <aside class="sidebar">
-                <h3>🏥 Quick Access</h3>
-                <div class="quick-link" onclick="findNearbyHospitals()">
-                    <span>🏥</span> Nearby Hospitals
+                <h3>🏥 Disease Information</h3>
+                <div class="quick-link" onclick="sendQuickQuestion('Tell me about COVID-19')">
+                    <span>🦠</span> COVID-19
                 </div>
-                <div class="quick-link" onclick="findNearbyDoctors()">
-                    <span>👨‍⚕️</span> Nearby Doctors
+                <div class="quick-link" onclick="sendQuickQuestion('Tell me about Diabetes')">
+                    <span>💉</span> Diabetes
                 </div>
-                <div class="quick-link" onclick="showHelplines()">
-                    <span>📞</span> Emergency Helplines
+                <div class="quick-link" onclick="sendQuickQuestion('Tell me about Tuberculosis')">
+                    <span>🫁</span> Tuberculosis
                 </div>
-                <div class="quick-link" onclick="showAyurvedicTips()">
-                    <span>🌿</span> Ayurvedic Tips
+                <div class="quick-link" onclick="sendQuickQuestion('Tell me about Malaria')">
+                    <span>🦟</span> Malaria
                 </div>
-                <div class="quick-link" onclick="showDietPlans()">
-                    <span>🥗</span> Diet Plans
+                <div class="quick-link" onclick="sendQuickQuestion('Tell me about Dengue')">
+                    <span>🌡️</span> Dengue Fever
+                </div>
+
+                <h3 style="margin-top: 30px;">📞 Emergency</h3>
+                <div class="quick-link" onclick="showEmergencyInfo()">
+                    <span>🚨</span> Emergency Numbers
                 </div>
             </aside>
 
+            <!-- Chat Container -->
             <main class="chat-container">
                 <div class="quick-questions">
-                    <button class="quick-btn" onclick="sendQuickQuestion('What are common cold symptoms?')">🤧 Cold Symptoms</button>
-                    <button class="quick-btn" onclick="sendQuickQuestion('How to reduce stress?')">😌 Stress Relief</button>
-                    <button class="quick-btn" onclick="sendQuickQuestion('Healthy diet tips')">🥗 Nutrition</button>
-                    <button class="quick-btn" onclick="sendQuickQuestion('Exercise recommendations')">💪 Exercise</button>
+                    <button class="quick-btn" onclick="sendQuickQuestion('What are COVID-19 symptoms?')">🤧 Symptoms</button>
+                    <button class="quick-btn" onclick="sendQuickQuestion('How to prevent diabetes?')">🛡️ Prevention</button>
+                    <button class="quick-btn" onclick="sendQuickQuestion('Does 5G cause COVID?')">❓ Myth Check</button>
+                    <button class="quick-btn" onclick="sendQuickQuestion('What diseases do you know?')">📚 Diseases</button>
                 </div>
 
                 <div class="messages-area" id="messagesArea">
                     <div class="message bot">
                         <div class="message-avatar">🤖</div>
-                        <div class="message-content">
-                            Hello! I'm your AI Health Assistant. How can I help you today? 💙
-                        </div>
+                        <div class="message-content">Hello! 👋 I'm your AI Public Health Assistant from BMS Institute.
+
+I can help you with:
+✅ Disease information (COVID-19, Diabetes, TB, Malaria, Dengue)
+✅ Symptoms and prevention tips
+✅ Health guidance and myth-busting
+✅ Emergency guidance
+
+⚠️ Remember: I provide general information only. For medical diagnosis or treatment, please consult healthcare professionals.
+
+What would you like to know about today?</div>
                     </div>
                 </div>
 
                 <div class="input-area">
                     <div class="input-container">
-                        <label for="imageUpload" class="upload-btn">📷</label>
-                        <input type="file" id="imageUpload" accept="image/*" onchange="handleFileUpload(this, 'image')">
-                        
-                        <label for="pdfUpload" class="upload-btn">📄</label>
-                        <input type="file" id="pdfUpload" accept=".pdf" onchange="handleFileUpload(this, 'pdf')">
-
-                        <textarea id="messageInput" placeholder="Type your health question..." rows="1"></textarea>
-                        <button class="send-btn" onclick="sendMessage()">➤</button>
+                        <textarea 
+                            id="messageInput" 
+                            placeholder="Ask me about health topics..." 
+                            rows="1"
+                            onkeypress="handleKeyPress(event)"
+                        ></textarea>
+                        <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
                     </div>
                 </div>
             </main>
@@ -569,203 +469,165 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        const API_URL = 'http://localhost:5000/api';
-        let currentUser = null;
-        let sessionId = null;
+        // Configuration
+        const API_URL = 'http://localhost:5000/api/chat';
+        const sessionId = 'session_' + Date.now();
 
-        // Show/Hide Forms
-        function showRegister() {
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('registerForm').style.display = 'block';
-        }
-
-        function showLogin() {
-            document.getElementById('registerForm').style.display = 'none';
-            document.getElementById('loginForm').style.display = 'block';
-        }
-
-        // Register
-        async function handleRegister(e) {
-            e.preventDefault();
-            const name = document.getElementById('registerName').value;
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-
-            try {
-                const res = await fetch(`${API_URL}/auth/register`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({name, email, password})
-                });
-                
-                const data = await res.json();
-                
-                if (res.ok) {
-                    showToast('Account created! Please login.', 'success');
-                    showLogin();
-                } else {
-                    showError('registerError', data.message);
-                }
-            } catch (err) {
-                showError('registerError', 'Network error. Please try again.');
-            }
-        }
-
-        // Login
-        async function handleLogin(e) {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-
-            try {
-                const res = await fetch(`${API_URL}/auth/login`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({email, password})
-                });
-                
-                const data = await res.json();
-                
-                if (res.ok) {
-                    sessionStorage.setItem('token', data.token);
-                    sessionStorage.setItem('user', JSON.stringify(data.user));
-                    currentUser = data.user;
-                    sessionId = data.sessionId;
-                    document.getElementById('authModal').classList.remove('active');
-                    document.getElementById('mainApp').style.display = 'flex';
-                    showToast(`Welcome ${data.user.name}! 👋`, 'success');
-                } else {
-                    showError('loginError', data.message);
-                }
-            } catch (err) {
-                showError('loginError', 'Network error. Please try again.');
-            }
-        }
-
-        // Logout
-        function logout() {
-            sessionStorage.clear();
-            document.getElementById('mainApp').style.display = 'none';
-            document.getElementById('authModal').classList.add('active');
-            showToast('Logged out successfully', 'success');
-        }
-
-        // Send Message
+        // Send message function
         async function sendMessage() {
             const input = document.getElementById('messageInput');
             const message = input.value.trim();
+
             if (!message) return;
 
+            // Disable input
+            input.disabled = true;
+            document.getElementById('sendBtn').disabled = true;
+
+            // Add user message
             addMessage(message, 'user');
             input.value = '';
 
+            // Show typing indicator
+            showTyping();
+
             try {
-                const res = await fetch(`${API_URL}/chat`, {
+                const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                     },
-                    body: JSON.stringify({message, sessionId})
+                    body: JSON.stringify({
+                        message: message,
+                        session_id: sessionId
+                    })
                 });
-                
-                const data = await res.json();
-                addMessage(data.response, 'bot');
-            } catch (err) {
-                addMessage('Error connecting to server', 'bot');
+
+                const data = await response.json();
+
+                // Hide typing indicator
+                hideTyping();
+
+                if (response.ok) {
+                    addMessage(data.response, 'bot');
+                } else {
+                    addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+                }
+            } catch (error) {
+                hideTyping();
+                console.error('Error:', error);
+                addMessage('Sorry, I couldn\'t connect to the server. Please make sure the backend is running on port 5000.', 'bot');
+            } finally {
+                // Re-enable input
+                input.disabled = false;
+                document.getElementById('sendBtn').disabled = false;
+                input.focus();
             }
         }
 
+        // Add message to chat
         function addMessage(text, sender) {
             const messagesArea = document.getElementById('messagesArea');
-            const msgDiv = document.createElement('div');
-            msgDiv.className = `message ${sender}`;
-            msgDiv.innerHTML = `
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+
+            messageDiv.innerHTML = `
                 <div class="message-avatar">${sender === 'user' ? '👤' : '🤖'}</div>
-                <div class="message-content">${text}</div>
+                <div class="message-content">${escapeHtml(text)}</div>
             `;
-            messagesArea.appendChild(msgDiv);
+
+            messagesArea.appendChild(messageDiv);
             messagesArea.scrollTop = messagesArea.scrollHeight;
         }
 
-        function sendQuickQuestion(q) {
-            document.getElementById('messageInput').value = q;
+        // Show typing indicator
+        function showTyping() {
+            const messagesArea = document.getElementById('messagesArea');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot';
+            typingDiv.id = 'typingIndicator';
+
+            typingDiv.innerHTML = `
+                <div class="message-avatar">🤖</div>
+                <div class="typing-indicator active">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+
+            messagesArea.appendChild(typingDiv);
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+        }
+
+        // Hide typing indicator
+        function hideTyping() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        // Send quick question
+        function sendQuickQuestion(question) {
+            document.getElementById('messageInput').value = question;
             sendMessage();
         }
 
-        function showError(id, msg) {
-            const el = document.getElementById(id);
-            el.textContent = msg;
-            el.classList.add('active');
-            setTimeout(() => el.classList.remove('active'), 3000);
+        // Show emergency info
+        function showEmergencyInfo() {
+            addMessage('Show emergency numbers', 'user');
+            setTimeout(() => {
+                addMessage(`🚨 EMERGENCY HELPLINES
+
+India:
+• Emergency: 112
+• Ambulance: 108
+• Police: 100
+• Fire: 101
+• Women Helpline: 1091
+• Child Helpline: 1098
+• Mental Health: 1800-599-0019
+
+For medical emergencies, call 108 immediately!`, 'bot');
+            }, 500);
         }
 
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-
-        function findNearbyHospitals() {
-            addMessage('Show me nearby hospitals', 'user');
-            setTimeout(() => addMessage('🏥 Nearby Hospitals:\n\n1. Apollo Hospital - 2.3 km\n2. Fortis Hospital - 3.1 km\n3. Manipal Hospital - 4.5 km', 'bot'), 500);
-        }
-
-        function findNearbyDoctors() {
-            addMessage('Show me nearby doctors', 'user');
-            setTimeout(() => addMessage('👨‍⚕️ Nearby Doctors:\n\n1. Dr. Rajesh Kumar - General Physician\n2. Dr. Priya Sharma - Cardiologist\n3. Dr. Amit Patel - Pediatrician', 'bot'), 500);
-        }
-
-        function showHelplines() {
-            addMessage('Emergency helplines', 'user');
-            setTimeout(() => addMessage('🚨 Emergency Helplines:\n\n• National Emergency: 112\n• Ambulance: 108\n• Police: 100\n• Mental Health: 1800-599-0019', 'bot'), 500);
-        }
-
-        function showAyurvedicTips() {
-            sendQuickQuestion('Give me ayurvedic health tips');
-        }
-
-        function showDietPlans() {
-            sendQuickQuestion('Suggest a healthy diet plan');
-        }
-
-        async function handleFileUpload(input, type) {
-            const file = input.files[0];
-            if (!file) return;
-
-            addMessage(`📎 Uploading ${file.name}...`, 'user');
-
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('sessionId', sessionId);
-            formData.append('type', type);
-
-            try {
-                const res = await fetch(`${API_URL}/upload`, {
-                    method: 'POST',
-                    headers: {'Authorization': `Bearer ${sessionStorage.getItem('token')}`},
-                    body: formData
-                });
-                
-                const data = await res.json();
-                addMessage(data.analysis, 'bot');
-            } catch (err) {
-                addMessage('Error uploading file', 'bot');
+        // Handle Enter key
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
             }
-            input.value = '';
         }
 
-        // Enter key to send
-        document.addEventListener('DOMContentLoaded', () => {
-            const input = document.getElementById('messageInput');
-            input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    sendMessage();
-                }
-            });
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Auto-resize textarea
+        document.getElementById('messageInput').addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 150) + 'px';
         });
+
+        // Focus input on load
+        window.onload = function() {
+            document.getElementById('messageInput').focus();
+        };
     </script>
 </body>
 </html>
