@@ -189,8 +189,8 @@ DISEASES = {
             "Severe weakness"
         ],
         "treatment_approach": "No specific treatment for dengue. Focus on rest, staying hydrated, and managing symptoms with acetaminophen (avoid aspirin and ibuprofen). Severe dengue requires hospitalization for IV fluids and monitoring."
-    }
-        "influenza": {
+    },
+    "influenza": {
         "name": "Influenza (Flu)",
         "description": "Influenza is a contagious respiratory illness caused by influenza viruses that infect the nose, throat, and sometimes the lungs.",
         "symptoms": [
