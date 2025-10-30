@@ -190,6 +190,207 @@ DISEASES = {
         ],
         "treatment_approach": "No specific treatment for dengue. Focus on rest, staying hydrated, and managing symptoms with acetaminophen (avoid aspirin and ibuprofen). Severe dengue requires hospitalization for IV fluids and monitoring."
     }
+        "influenza": {
+        "name": "Influenza (Flu)",
+        "description": "Influenza is a contagious respiratory illness caused by influenza viruses that infect the nose, throat, and sometimes the lungs.",
+        "symptoms": [
+            "Fever",
+            "Chills",
+            "Cough",
+            "Sore throat",
+            "Runny or stuffy nose",
+            "Muscle or body aches",
+            "Fatigue"
+        ],
+        "prevention": [
+            "Annual flu vaccination",
+            "Frequent hand washing",
+            "Avoid close contact with sick individuals",
+            "Cover mouth and nose when coughing or sneezing"
+        ],
+        "myths": [
+            "Flu vaccine can give you the flu",
+            "The flu is just a bad cold",
+            "Only sick people spread flu",
+            "You don't need a flu shot every year"
+        ],
+        "transmission": "Influenza spreads mainly through droplets made when people with flu cough, sneeze, or talk.",
+        "treatment_approach": "Rest, hydration, and antiviral drugs (if prescribed). Seek medical attention for severe symptoms."
+    },
+    "hypertension": {
+        "name": "Hypertension (High Blood Pressure)",
+        "description": "Hypertension is a condition where the force of the blood against the artery walls is consistently too high, increasing the risk of heart disease and stroke.",
+        "symptoms": [
+            "Often asymptomatic",
+            "Headaches",
+            "Dizziness",
+            "Chest pain",
+            "Shortness of breath"
+        ],
+        "prevention": [
+            "Maintain a healthy diet and weight",
+            "Exercise regularly",
+            "Limit salt and alcohol intake",
+            "Quit smoking",
+            "Manage stress",
+            "Regular blood pressure checkups"
+        ],
+        "myths": [
+            "Only older people get hypertension",
+            "You can control salt intake just by avoiding table salt",
+            "High blood pressure cannot be prevented"
+        ],
+        "transmission": "Hypertension is not contagious. It develops due to lifestyle, genetics, and health conditions.",
+        "treatment_approach": "Lifestyle modifications, medication as prescribed, and regular monitoring."
+    },
+    "asthma": {
+        "name": "Asthma",
+        "description": "Asthma is a chronic condition that affects the airways in the lungs, making it difficult to breathe.",
+        "symptoms": [
+            "Wheezing",
+            "Coughing",
+            "Shortness of breath",
+            "Chest tightness"
+        ],
+        "prevention": [
+            "Avoid known triggers",
+            "Take prescribed inhalers regularly",
+            "Avoid smoking",
+            "Manage allergies",
+            "Schedule regular checkups"
+        ],
+        "myths": [
+            "Only children get asthma",
+            "You shouldn’t exercise if you have asthma",
+            "No wheezing means no asthma",
+            "Removing milk or wheat will cure asthma"
+        ],
+        "transmission": "Asthma is not contagious but can be triggered by environmental or genetic factors.",
+        "treatment_approach": "Inhalers, medication, and trigger avoidance."
+    },
+    "typhoid": {
+        "name": "Typhoid Fever",
+        "description": "Typhoid fever is a bacterial infection caused by Salmonella Typhi, spread through contaminated food and water.",
+        "symptoms": [
+            "Fever",
+            "Headache",
+            "Abdominal pain",
+            "Constipation or diarrhea",
+            "Fatigue"
+        ],
+        "prevention": [
+            "Vaccination",
+            "Drink safe and clean water",
+            "Practice good food hygiene",
+            "Wash hands regularly"
+        ],
+        "myths": [
+            "Typhoid can be cured without antibiotics",
+            "Immunity after infection protects for life",
+            "Typhoid spreads by coughing or sneezing"
+        ],
+        "transmission": "Typhoid spreads through ingestion of food or water contaminated with the feces of an infected person.",
+        "treatment_approach": "Antibiotic treatment and hydration. Avoid self-medication."
+    },
+    "measles": {
+        "name": "Measles",
+        "description": "Measles is a highly contagious viral infection that causes fever, rash, and respiratory symptoms.",
+        "symptoms": [
+            "Rash",
+            "High fever",
+            "Cough",
+            "Runny nose",
+            "Red eyes",
+            "Koplik spots (inside mouth)"
+        ],
+        "prevention": [
+            "Two doses of MMR vaccine",
+            "Avoid contact with infected individuals"
+        ],
+        "myths": [
+            "Only children get measles",
+            "Measles isn’t serious",
+            "Hand washing alone can prevent measles",
+            "Vaccine isn’t needed"
+        ],
+        "transmission": "Measles spreads through respiratory droplets from coughs and sneezes.",
+        "treatment_approach": "No specific antiviral treatment. Supportive care with fluids, rest, and vitamin A supplements."
+    },
+    "pneumonia": {
+        "name": "Pneumonia",
+        "description": "Pneumonia is an infection that inflames the air sacs in one or both lungs, which may fill with fluid.",
+        "symptoms": [
+            "Cough (sometimes with phlegm)",
+            "Chest pain",
+            "Difficulty breathing",
+            "Fever",
+            "Fatigue"
+        ],
+        "prevention": [
+            "Vaccinations (flu, pneumococcal)",
+            "Good hand hygiene",
+            "Avoid smoking",
+            "Seek prompt treatment for respiratory infections"
+        ],
+        "myths": [
+            "Pneumonia is just a bad cold",
+            "Only elderly and children get pneumonia",
+            "Pneumonia is only caused by bacteria",
+            "Recovery is always quick"
+        ],
+        "transmission": "Pneumonia spreads through airborne droplets from coughs or sneezes and via contaminated surfaces.",
+        "treatment_approach": "Antibiotics (if bacterial), rest, and fluids. Hospital care for severe cases."
+    },
+    "hepatitis": {
+        "name": "Hepatitis",
+        "description": "Hepatitis is inflammation of the liver caused by viral infections, toxins, or autoimmune diseases.",
+        "symptoms": [
+            "Often asymptomatic initially",
+            "Jaundice",
+            "Fatigue",
+            "Dark urine",
+            "Abdominal pain"
+        ],
+        "prevention": [
+            "Vaccination for hepatitis A and B",
+            "Avoid sharing needles or personal items",
+            "Ensure safe food and water",
+            "Regular health checkups"
+        ],
+        "myths": [
+            "Only alcoholics or drug abusers get hepatitis",
+            "Hepatitis only affects poor countries",
+            "You can identify hepatitis by symptoms",
+            "No cure for hepatitis"
+        ],
+        "transmission": "Hepatitis spreads through contact with infected blood, bodily fluids, or contaminated food/water.",
+        "treatment_approach": "Depends on type — may include antiviral medication, rest, and liver support."
+    },
+    "chickenpox": {
+        "name": "Chickenpox (Varicella)",
+        "description": "Chickenpox is a highly contagious viral infection causing an itchy, blister-like rash.",
+        "symptoms": [
+            "Fever",
+            "Fatigue",
+            "Headache",
+            "Itchy blister rash",
+            "Loss of appetite"
+        ],
+        "prevention": [
+            "Two-dose varicella vaccine",
+            "Avoid contact with infected individuals",
+            "Maintain good hygiene",
+            "Do not share personal items"
+        ],
+        "myths": [
+            "Chickenpox parties are safe",
+            "Vaccine is unnecessary",
+            "Only children get chickenpox"
+        ],
+        "transmission": "Spreads easily through airborne droplets or contact with the rash.",
+        "treatment_approach": "Rest, fluids, calamine lotion, and antiviral medication (if prescribed). Avoid scratching to prevent infection."
+    },
+
 }
 
 # ==================== HEALTH MYTHS DATABASE ====================
@@ -203,6 +404,14 @@ MYTHS = {
     "cold weather sick": "FALSE: Cold weather itself doesn't make you sick. Viruses cause colds and flu. However, people tend to stay indoors more in cold weather, which can increase virus transmission.",
     "vitamin c cure": "FALSE: While vitamin C supports immune function, it cannot prevent or cure COVID-19 or other viral infections. A balanced diet is important, but it's not a substitute for vaccination.",
     "hand dryers kill virus": "FALSE: Hand dryers do NOT kill viruses. Proper handwashing with soap and water for 20 seconds is effective. Hand dryers are only for drying hands after washing."
+    "flu vaccine": "FALSE: The flu vaccine cannot give you the flu. It helps your body build immunity against influenza viruses.",
+    "blood pressure salt": "FALSE: Avoiding only table salt is not enough. Processed foods also contribute to high sodium intake.",
+    "exercise asthma": "FALSE: Exercise can actually improve lung function when asthma is well controlled.",
+    "typhoid cure": "FALSE: Typhoid requires antibiotics; untreated infections can become severe.",
+    "measles vaccine": "FALSE: The MMR vaccine is essential and safe. It prevents measles and its complications.",
+    "pneumonia cold": "FALSE: Pneumonia is more serious than a cold and can be caused by bacteria, viruses, or fungi.",
+    "hepatitis alcoholics": "FALSE: Anyone can get hepatitis through viruses or unsafe practices.",
+    "chickenpox parties": "FALSE: Chickenpox parties are dangerous and can cause severe infections. Vaccination is safer."
 }
 
 # ==================== EMERGENCY KEYWORDS ====================
