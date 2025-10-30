@@ -403,7 +403,7 @@ MYTHS = {
     "tb hereditary": "FALSE: TB is NOT hereditary or genetic. It's caused by bacteria and spreads through the air. However, some people may have genetic factors that affect their immune response to TB.",
     "cold weather sick": "FALSE: Cold weather itself doesn't make you sick. Viruses cause colds and flu. However, people tend to stay indoors more in cold weather, which can increase virus transmission.",
     "vitamin c cure": "FALSE: While vitamin C supports immune function, it cannot prevent or cure COVID-19 or other viral infections. A balanced diet is important, but it's not a substitute for vaccination.",
-    "hand dryers kill virus": "FALSE: Hand dryers do NOT kill viruses. Proper handwashing with soap and water for 20 seconds is effective. Hand dryers are only for drying hands after washing."
+    "hand dryers kill virus": "FALSE: Hand dryers do NOT kill viruses. Proper handwashing with soap and water for 20 seconds is effective. Hand dryers are only for drying hands after washing.",
     "flu vaccine": "FALSE: The flu vaccine cannot give you the flu. It helps your body build immunity against influenza viruses.",
     "blood pressure salt": "FALSE: Avoiding only table salt is not enough. Processed foods also contribute to high sodium intake.",
     "exercise asthma": "FALSE: Exercise can actually improve lung function when asthma is well controlled.",
