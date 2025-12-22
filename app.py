@@ -16,6 +16,9 @@ import google.generativeai as genai
 load_dotenv()
 
 # Initialize Flask app
+from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
+
 app = Flask(__name__)
 CORS(app)
 
@@ -354,8 +357,80 @@ def get_stats():
             'status': 'error'
         }), 500
 
+# ============================================================================
+# AUTHENTICATION ROUTES (Add this before if __name__)
+# ============================================================================
 
+# Simple user storage (in-memory - for demo only)
+users = {}
+
+@app.route('/api/auth/register', methods=['POST'])
+def register():
+    try:
+        data = request.json
+        email = data.get('email')
+        password = data.get('password')
+        name = data.get('name')
+        
+        if email in users:
+            return jsonify({'error': 'User already exists'}), 400
+        
+        # Store user (in production, hash the password!)
+        users[email] = {
+            'name': name,
+            'email': email,
+            'password': password  # DON'T do this in production!
+        }
+        
+        return jsonify({
+            'message': 'Registration successful',
+            'user': {'name': name, 'email': email, 'id': email}
+        }), 201
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/auth/login', methods=['POST'])
+def login():
+    try:
+        data = request.json
+        email = data.get('email')
+        password = data.get('password')
+        
+        if email not in users:
+            return jsonify({'error': 'User not found'}), 404
+        
+        if users[email]['password'] != password:
+            return jsonify({'error': 'Invalid password'}), 401
+        
+        user = users[email]
+        return jsonify({
+            'message': 'Login successful',
+            'token': 'demo_token_' + email,  # In production, use JWT
+            'user': {'name': user['name'], 'email': email, 'id': email}
+        }), 200
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/auth/logout', methods=['POST'])
+def logout():
+    return jsonify({'message': 'Logout successful'}), 200
 # ==================== RUN SERVER ====================
+@app.route('/')
+def root():
+    return render_template('login.html')
+
+
+@app.route('/login')
+def login_page():
+    return render_template('login.html')
+
+
+@app.route('/app')
+def app_page():
+    return render_template('index1.html')
+
 if __name__ == '__main__':
     print("=" * 70)
     print("🏥 AI-DRIVEN PUBLIC HEALTH CHATBOT - BACKEND SERVER v2.0")
@@ -381,4 +456,5 @@ if __name__ == '__main__':
     print("=" * 70)
     
     # Run Flask app
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=False, host='0.0.0.0', port=port)
