@@ -3,10 +3,10 @@
 // ============================================================================
 
 // Configuration
-const API_HOST = window.location.hostname || '127.0.0.1';
-const API_PORT = 5000;
-const API_URL = `http://${API_HOST}:${API_PORT}/api`;
-
+// Production-ready API URL
+const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000/api'  // Local development
+    : '/api';  // Production (same origin)
 let sessionId = 'session_' + Date.now();
 let currentLang = 'en';
 
