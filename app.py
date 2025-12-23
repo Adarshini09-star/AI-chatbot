@@ -1,9 +1,3 @@
-"""
-AI-Driven Public Health Chatbot - Backend with Gemini AI
-BMS Institute of Technology and Management
-Team: Adarshini (Backend), Bhoomi (Frontend), Jyoti (UI/UX), Navya (Data)
-"""
-
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from datetime import datetime

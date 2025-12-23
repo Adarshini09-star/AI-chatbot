@@ -3,11 +3,6 @@
 // Frontend + Backend served from SAME Flask origin
 // ============================================================================
 
-// NOTE:
-// We DO NOT hardcode localhost:5000 anymore.
-// We use SAME-ORIGIN relative paths.
-// This removes ALL CORS / network issues.
-
 console.log("🔐 Auth JS loaded");
 
 // ============================================================================
